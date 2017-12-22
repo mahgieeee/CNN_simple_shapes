@@ -2,6 +2,7 @@ from __future__ import print_function
 import pickle
 import joblib
 from multiprocessing import Pool
+import argparse
 
 def load_train_or_test(files):    
     with open(files, 'rb') as f:
@@ -48,7 +49,6 @@ square_dataset1 = []
 def result13(data): 
     square_dataset1.append(data)
  
-
 valid_circle_dataset = []   
 def result4(data): 
     valid_circle_dataset.append(data)
@@ -95,25 +95,19 @@ class Loader(object):
         p.close()
         p.join()    
         
-        
-if __name__ == '__main__':
-    
-    load('result', 'resized_training_set/circle.pkl')
+def which_load(training_paths, validation_paths):
+    training_results = ['result', 'result1', 'result2', 'result3', 'result10', 
+                        'result11', 'result12', 'result13']
+    validation_results = ['result4', 'result5', 'result6', 'result7', 'result14', 
+                        'result15', 'result16', 'result17']
+    for result, pickle_path in training_results, training_paths:
+        load(result, pickle_path)
+    for result, pickle_path in validation_results, validation_paths:
+        load(result, pickle_path)
+    '''load('result', 'resized_training_set/circle.pkl')
     load('result1', 'resized_training_set/triangle.pkl')
     load('result2', 'resized_training_set/rectangle.pkl')
-    load('result3', 'resized_training_set/square.pkl')
-    load('result10', 'crop_images/circle.pkl')
-    load('result11', 'crop_images/triangle.pkl')
-    load('result12', 'crop_images/rectangle.pkl')
-    load('result13', 'crop_images/square.pkl')
-    load('result4', 'resized_training_set/valid_circle.pkl')
-    load('result5', 'resized_training_set/valid_triangle.pkl')
-    load('result6', 'resized_training_set/valid_rectangle.pkl')
-    load('result7', 'resized_training_set/valid_square.pkl')
-    load('result14', 'crop_images/valid_circle.pkl')
-    load('result15', 'crop_images/valid_triangle.pkl')
-    load('result16', 'crop_images/valid_rectangle.pkl')
-    load('result17', 'crop_images/valid_square.pkl')
+    load('result3', 'resized_training_set/square.pkl')'''
 
     #merge dataset
     train_data = (circle_dataset + triangle_dataset + rectangle_dataset + 
@@ -124,7 +118,6 @@ if __name__ == '__main__':
                        valid_circle_dataset1 + valid_triangle_dataset1 + 
                        valid_rectangle_dataset1 + valid_square_dataset1)
 
-    
     pickle_file = 'data_shapes.pkl'
     try:
         f = open(str(pickle_file), 'wb')
@@ -136,5 +129,12 @@ if __name__ == '__main__':
     except Exception as e:
         print('Unable to save data to', str(pickle_file), ':', e)
         raise
-    
-    
+        
+if __name__ == '__main__':    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--validation-list', '--list', help='delimited validation list input', type=str)
+    parser.add_argument('--train-list', '--list', help='delimited train list input', type=str)
+    args = parser.parse_args()
+    train_list = [item for item in args.list.split(',')]
+    validation_list = [item for item in args.list.split(',')]
+    which_load(train_list, validation_list)    

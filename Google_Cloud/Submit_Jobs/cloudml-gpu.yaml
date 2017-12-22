@@ -1,0 +1,31 @@
+trainingInput:
+    # scaleTier: CUSTOM
+    # standard_gpu provides 1 GPU. Change to complex_model_m_gpu for 4 GPUs
+    # masterType: standard_gpu
+    # runtimeVersion: "1.0"
+    hyperparameters:
+    goal: MAXIMIZE
+    hyperparameterMetricTag: accuracy
+    maxTrials: 4
+    maxParallelTrials: 2
+    params:
+      - parameterName: dropout-one
+        type: DOUBLE
+        minValue: 0.1
+        maxValue: 0.5
+        scaleType: UNIT_REVERSE_LOG_SCALE
+      - parameterName: dropout-two
+        type: DOUBLE
+        minValue: 0.1
+        maxValue: 0.5
+        scaleType: UNIT_REVERSE_LOG_SCALE
+      - parameterName: num-units-one
+        type: INT
+        minValue: 500
+        maxValue: 700
+        scaleType: UNIT_REVERSE_LOG_SCALE
+      - parameterName: num-units-two
+        type: INT
+        minValue: 500
+        maxValue: 700
+        scaleType: UNIT_REVERSE_LOG_SCALE

@@ -96,10 +96,11 @@ if __name__ == '__main__':
     
     for image_path in glob.glob(shape_path + "*png"):
         p.apply_async(process_images, (image_path, shape_path), callback = result)
+    p.close() # no more tasks
+    p.join() # wrap up current tasks
     
     file_txt = "background_circle.txt"   
     for image_path in glob.glob(shape_path + "*png"):
-        p.apply_async(save_background_colors, (image_path, file_txt))
-        
+        p.apply_async(save_background_colors, (image_path, file_txt))       
     p.close() # no more tasks
     p.join() # wrap up current tasks
